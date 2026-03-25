@@ -18,14 +18,15 @@ Depends:
     R (>= 4.1.0)
 Imports:
     mvtnorm,
+    invgamma,
     stats,
     graphics,
     utils,
     grDevices
 Suggests:
     testthat (>= 3.0.0),
-    shiny,
     ggplot2,
+    bayesplot,
     coda,
     styler,
     lintr
