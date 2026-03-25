@@ -1,0 +1,36 @@
+Package: bayesian.mcmc.engine
+Title: Bayesian MCMC Inference Engine for Time Series Forecasting
+Version: 0.1.0
+Authors@R:
+    person(
+        "Christian Joseph", "Bunyi",
+        email = "cj.bunyi.dev@gmail.com",
+        role = c("aut", "cre"),
+        comment = c(ORCID = "0009-0009-6703-0144")
+    )
+Description: A custom AR(p) inference engine using a fully Bayesian MCMC approach
+    for cloud compute billing prediction.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+ByteCompile: true
+Depends:
+    R (>= 4.1.0)
+Imports:
+    mvtnorm,
+    stats,
+    graphics,
+    utils,
+    grDevices
+Suggests:
+    testthat (>= 3.0.0),
+    shiny,
+    ggplot2,
+    coda,
+    styler,
+    lintr
+URL: https://github.com/qu1r0ra/bayesian-mcmc-inference-engine
+BugReports: https://github.com/qu1r0ra/bayesian-mcmc-inference-engine/issues
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
