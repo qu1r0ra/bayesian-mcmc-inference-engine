@@ -2,13 +2,13 @@
 
 ## Phase 1: Problem Definition & Selection
 
-- [ ] **Select Computational Problem**
+- [x] **Select Computational Problem**
   - [x] Topic 10: Autoregressive AR(p) Time Series selected.
-- [ ] **Define ML/Statistical Challenge**
-  - [ ] Explain AWS/GCP daily billing temporal dependencies.
-- [ ] **Justify Bayesian Approach**
-  - [ ] Contrast with frequentist point estimates.
-  - [ ] Explain value of uncertainty quantification in production risk-management.
+- [x] **Define ML/Statistical Challenge**
+  - [x] Explain AWS/GCP daily billing temporal dependencies.
+- [x] **Justify Bayesian Approach**
+  - [x] Contrast with frequentist point estimates.
+  - [x] Explain value of uncertainty quantification in production risk-management.
 
 ## Phase 2: Mathematical Formulation
 
