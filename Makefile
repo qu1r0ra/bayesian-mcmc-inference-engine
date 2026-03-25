@@ -18,7 +18,7 @@ lint:
 
 # Run unit tests via testthat
 test:
-	Rscript -e "testthat::test_dir('tests/testthat')"
+	Rscript -e "testthat::test_local()"
 
 # Generate package documentation (man/ files) and NAMESPACE via Roxygen2
 doc:
