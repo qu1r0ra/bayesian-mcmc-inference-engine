@@ -1,2 +1,3 @@
 # bayesian-mcmc-inference-engine
-A Bayesian inference pipeline with a custom Markov Chain Monte Carlo (MCMC) engine. Created for DAT004M (Probability and Statistics).
+
+A custom AR(p) inference engine using a fully Bayesian MCMC approach for cloud compute billing prediction.
