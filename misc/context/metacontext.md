@@ -24,3 +24,17 @@ Our group chose **10. Autoregressive AR(p) Time Series Forecasting** from the to
   - **Coefficients ($\beta$):** Multivariate Normal (MVN) prior.
   - **Error Variance ($\sigma^2$):** Inverse-Gamma (IG) prior.
 - **Implementation:** Pure R implementation for transparency and adherence to project "from-scratch" requirements. Optimization via `Rcpp` is deprioritized in favor of code clarity.
+
+## External Library Context (context7)
+
+To ensure accurate documentation retrieval for this Bayesian MCMC project, use the following `libraryId`s for `context7` queries:
+
+| Library        | libraryId              | Purpose                                            |
+| :------------- | :--------------------- | :------------------------------------------------- |
+| **R Language** | `/wch/r-source`        | Base R, statistical functions, and S3/S4 methods   |
+| **Tidyverse**  | `/tidyverse/tidyverse` | General data science workflow (includes `ggplot2`) |
+| **ggplot2**    | `/tidyverse/ggplot2`   | Advanced plotting and visualization                |
+| **testthat**   | `/r-lib/testthat`      | Unit testing and package validation                |
+
+> [!TIP]
+> For Bayesian-specific packages like `mvtnorm`, `invgamma`, `bayesplot`, or `coda`, you can attempt to resolve their IDs using the `resolve-library-id` tool if a direct query fails.
