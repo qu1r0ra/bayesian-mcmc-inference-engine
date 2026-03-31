@@ -38,3 +38,16 @@ To ensure accurate documentation retrieval for this Bayesian MCMC project, use t
 
 > [!TIP]
 > For Bayesian-specific packages like `mvtnorm`, `invgamma`, `bayesplot`, or `coda`, you can attempt to resolve their IDs using the `resolve-library-id` tool if a direct query fails.
+
+## Workflow & Documentation Decisions
+
+### Phase Swap (MCMC vs. Simulation)
+
+- **Phase 3 (MCMC Logic & Implementation)** and **Phase 4 (Simulation & Verification)** were swapped in the master plan.
+- Building the engine logic first allows for mathematical unit testing against known distribution properties before generating the specific synthetic datasets.
+
+### Reporting & Typography
+
+- **Class:** **arXiv** one-column template (based on `arxiv.sty` and `article` class).
+- **Typography:** The report structure is grouped into high-level **Methodology** and **Results and Discussion** chapters to improve narrative flow.
+- Reduced the `\vskip` in `arxiv.sty` to provide a tighter, more modern academic appearance.

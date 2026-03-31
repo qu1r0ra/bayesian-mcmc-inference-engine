@@ -1,4 +1,12 @@
-# Bayesian MCMC Inference Engine - Project Checklist
+# Project Implementation Checklist (DAT004M) <!-- omit from toc -->
+
+- [x] Phase 1: Problem Definition & Selection (Topic 10: Cloud Billing)
+- [ ] Phase 2: Mathematical Formulation (AR(p) + Gibbs Sampler)
+- [ ] Phase 3: MCMC Logic & Implementation (The Engine)
+- [ ] Phase 4: Ground Truth Simulation & Verification (The Ground Truth)
+- [ ] Phase 5: Diagnostics & Results
+- [ ] Phase 6: Forecasting & Uncertainty Quantification
+- [ ] Phase 7: Final Documentation & Report
 
 ## Phase 1: Problem Definition & Selection
 
@@ -12,61 +20,56 @@
 
 ## Phase 2: Mathematical Formulation
 
-- [ ] **Rigorous Model definition**
-  - [ ] Define AR(p) process with intercept.
-- [ ] **Explicit Likelihood Function**
-  - [ ] Derive the joint likelihood for the time series.
-- [ ] **Prior Specification & Justification**
-  - [ ] Define MVN prior for coefficients ($\beta$).
-  - [ ] Define Inverse-Gamma prior for error variance ($\sigma^2$).
-- [ ] **Analytical Derivations**
-  - [ ] Derive full conditional distribution for $\beta$.
-  - [ ] Derive full conditional distribution for $\sigma^2$.
-- [ ] **Technical Discussion**
-  - [ ] Explain Gibbs Sampling mechanics for the chosen model.
+- [ ] **Define the Generative Model**
+  - [ ] Specify the AR(p) process equations.
+  - [ ] Define the constant term (intercept).
+- [ ] **Specify Prior Distributions**
+  - [ ] Justify Multivariate Normal for coefficients.
+  - [ ] Justify Inverse-Gamma for error variance.
+- [ ] **Derive Full Conditional Distributions**
+  - [ ] Posterior of coefficients given variance.
+  - [ ] Posterior of variance given coefficients.
 
-## Phase 3: Ground Truth Simulation
+## Phase 3: MCMC Logic & Implementation
 
-- [ ] **Develop Simulation Script**
-  - [ ] Create `R/simulate_data.R`.
-- [ ] **Pre-define Ground Truth Parameters**
-  - [ ] Set known "True" values for $\phi_i$ and $\sigma$.
-- [ ] **Algorithmic Debugging Tool**
-  - [ ] Ensure the sampler can recover these specific known values.
+- [ ] **Initialize the Gibbs Sampler**
+  - [ ] Set up iterative loop and parameter storage.
+- [ ] **Update Matrix Algebra**
+  - [ ] Create design matrix (X) with p-lags.
+  - [ ] Implement vectorsized calculations.
+- [ ] **Manage MCMC Transitions**
+  - [ ] Draw from conditional posteriors every iteration.
+  - [ ] Implement proper burn-in period.
 
-## Phase 4: MCMC Engine Implementation
+## Phase 4: Ground Truth Simulation & Verification
 
-- [ ] **Implement Pure R Sampler**
-  - [ ] Build iterative Gibbs loop from scratch.
-- [ ] **Console Feedback**
-  - [ ] Implement `txtProgressBar` or equivalent.
-- [ ] **Avoid External Black-Boxes**
-  - [ ] Ensure no reliance on Stan/JAGS for core implementation.
+- [ ] **Generate Synthetic AR(p) Series**
+  - [ ] Set "true" parameters (c, phi, sigma).
+  - [ ] Simulate series using the process equation.
+- [ ] **Parameter Recovery Check**
+  - [ ] Feed synthetic series to the MCMC engine.
+  - [ ] Verify posterior means match "true" values.
 
-## Phase 5: Chain Mixing & Diagnostics
+## Phase 5: Diagnostics & Results
 
-- [ ] **Verification of Stationarity**
-  - [ ] Identify and discard burn-in period.
-- [ ] **Visual Proofs**
-  - [ ] Generate publication-quality trace plots.
-  - [ ] Generate posterior density plots with 95% Credible Intervals.
-- [ ] **Quantitative Efficiency**
-  - [ ] Calculate Effective Sample Size (ESS) for all parameters.
+- [ ] **Verify Chain Convergence**
+  - [ ] Generate trace plots for all parameters.
+  - [ ] Check mixing and stationarity.
+- [ ] **Quantify Posterior Evidence**
+  - [ ] Calculate Effective Sample Size (ESS).
+  - [ ] Generate kernel density plots of posteriors.
 
-## Phase 6: Inference & Risk-Aware Prediction
+## Phase 6: Forecasting & Uncertainty Quantification
 
-- [ ] **Posterior Predictive Distribution**
-  - [ ] Feed new synthetic data points.
-  - [ ] Calculate full distribution of future costs.
-- [ ] **Forecasting Logic**
-  - [ ] Forecast next 30 days with expanding 95% CIs.
-- [ ] **Final Analysis**
-  - [ ] Explain how a production system uses these uncertainty metrics for defensive decisions.
+- [ ] **Simulate Predictive Future**
+  - [ ] Iteratively generate next 30 days of billing.
+- [ ] **Quantify Range of Outcomes**
+  - [ ] Calculate 95% credible intervals for predictions.
+  - [ ] Generate probabilistic "fan plots" for forecasting.
 
-## Final Submission
+## Phase 7: Final Documentation & Report
 
-- [ ] **Technical Report (.pdf)**
-  - [ ] Structured exactly according to 6 phases.
-  - [ ] Clean math formatting (LaTeX).
-- [ ] **Annotated Code Reproducibility**
-  - [ ] All .R scripts documented and runnable.
+- [ ] **Compose Technical Report**
+  - [ ] Compile LaTeX source into final PDF.
+- [ ] **Final Packaging**
+  - [ ] Ensure README, NAMESPACE, and documentation are synchronized.
