@@ -1,0 +1,73 @@
+\documentclass{article}
+
+\usepackage{arxiv}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{nicefrac}
+\usepackage{microtype}
+\usepackage{cleveref}
+\usepackage{graphicx}
+\usepackage{natbib}
+\usepackage{doi}
+\usepackage{bm}
+
+\graphicspath{{assets/figures/}{assets/others/}}
+
+\title{Bayesian MCMC Inference Engine for Cloud Compute Billing Prediction: An AR($p$) Approach}
+
+\author{
+    Axl Roel Andaya, Christian Joseph Bunyi, Sean Higgins Lim \\
+    De La Salle University \\
+    \texttt{\{axl\_andaya,christian\_bunyi,sean\_higgins\_lim\}} \\ \texttt{@dlsu.edu.ph}
+}
+
+% Header overrides
+\renewcommand{\shorttitle}{Bayesian MCMC Cloud Compute Billing Prediction}
+\date{}
+
+\begin{document}
+\maketitle
+
+% \begin{abstract}
+% The abstract.
+% \end{abstract}
+
+% \keywords{Bayesian Inference \and MCMC \and Gibbs Sampler \and Autoregressive Model \and Cloud Billing}
+
+\section{Introduction}
+Explain the motivation behind Topic 10 (Cloud Compute Billing). Provide the justification for using a Bayesian approach, specifically highlighting the value of uncertainty quantification in cost forecasting compared to frequentist methods.
+
+\section{Methodology}
+This section describes the mathematical formulation of our AR($p$) framework and the subsequent logic of the Markov Chain Monte Carlo (MCMC) inference engine.
+
+\subsection{Mathematical Framework}
+Detail the AR($p$) process equation and the choice of semi-conjugate priors (Multivariate Normal for coefficients $\bm{\beta}$ and Inverse-Gamma for variance $\sigma^2$). Provide the derived full conditional distributions used in the sampling process.
+
+\subsection{MCMC Engine Implementation}
+Explain the iterative Gibbs sampling loop. Describe the structure of the R package core and how the sampling transitions between the conditional posteriors of $\bm{\beta}$ and $\sigma^2$.
+
+\section{Results and Discussion}
+We present the empirical results of our engine, starting with a ground-truth simulation and moving into detailed diagnostics and forecasting results.
+
+\subsection{Ground Truth Simulation \& Verification}
+Establish the known parameters used to generate the synthetic series. Demonstrate that the MCMC engine successfully recovers these "true" coefficients, verifying the mathematical correctness of the implementation.
+
+\subsection{Diagnostics \& Convergence Analysis}
+Provide trace plots and density plots for the parameters to show mixing and stationarity. Report the Effective Sample Size (ESS) to ensure the independence of iterations.
+
+\subsection{Forecasting \& Uncertainty Quantification}
+Generate a 30-day forecast. Analyze the posterior predictive distributions and the 95\% credible intervals to quantify the range of likely billing outcomes.
+
+% \section{Conclusion}
+% Summary of the project's contributions and potential areas for future refinement.
+
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+\end{document}
