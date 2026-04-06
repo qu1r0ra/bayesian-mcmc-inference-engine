@@ -189,7 +189,7 @@ generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = "
         tv <- true_params$beta[idx + 1]
       }
     }
-    
+
     plot_list[[p_name]] <- list(
       trace = plot_mcmc_trace(all_samples, p_name, tv),
       density = plot_posterior_density(all_samples, p_name, tv),
@@ -208,7 +208,7 @@ generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = "
   if (requireNamespace("rmarkdown", quietly = TRUE) && template_path != "") {
     pdf_out <- "docs/reports/appendices/diagnostics_result.pdf"
     if (!dir.exists(dirname(pdf_out))) dir.create(dirname(pdf_out), recursive = TRUE)
-    
+
     # Render with local environment variables
     params_summary <- summary_stats
     rmarkdown::render(

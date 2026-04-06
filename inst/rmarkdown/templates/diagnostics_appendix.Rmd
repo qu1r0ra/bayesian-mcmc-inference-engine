@@ -33,19 +33,19 @@ if (exists("params_summary")) {
 if (exists("plot_list")) {
   for (p_name in names(plot_list)) {
     cat("\n## Parameter:", p_name, "\n")
-    
+
     # Trace Plot
     print(plot_list[[p_name]]$trace)
     cat("\n\n")
-    
+
     # Density Plot
     print(plot_list[[p_name]]$density)
     cat("\n\n")
-    
+
     # ACF Plot
     print(plot_list[[p_name]]$acf)
     cat("\n\n")
-    
+
     # Rank Plot
     print(plot_list[[p_name]]$rank)
     cat("\n\n")
