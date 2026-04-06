@@ -205,8 +205,11 @@ generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = "
     template_path <- "inst/rmarkdown/templates/diagnostics_appendix.Rmd"
   }
 
-  if (requireNamespace("rmarkdown", quietly = TRUE) && template_path != "") {
-    pdf_out <- "docs/reports/appendices/diagnostics_result.pdf"
+  if (requireNamespace("rmarkdown", quietly = TRUE) &&
+    rmarkdown::pandoc_available() &&
+    template_path != "") {
+    # Generate report relative to assets directory if not absolute
+    pdf_out <- file.path(output_dir, "report/diagnostics_result.pdf")
     if (!dir.exists(dirname(pdf_out))) dir.create(dirname(pdf_out), recursive = TRUE)
 
     # Render with local environment variables
