@@ -5,7 +5,7 @@
 \alias{project_config}
 \title{Internal Project Constants and Path Configuration}
 \format{
-An object of class \code{list} of length 20.
+An object of class \code{list} of length 21.
 }
 \usage{
 project_config
