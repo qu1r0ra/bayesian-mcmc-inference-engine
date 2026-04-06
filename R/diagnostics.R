@@ -72,6 +72,26 @@ plot_mcmc_acf <- function(samples, param_name) {
     )
 }
 
+#' Generate Rank Histograms to Verify Convergence
+#'
+#' @param samples A numeric vector or matrix of MCMC samples.
+#' @param param_name Name of the parameter for labeling the plot.
+#' @return A ggplot object.
+#' @export
+plot_mcmc_rank <- function(samples, param_name) {
+  if (is.null(dim(samples))) {
+    samples <- as.matrix(samples)
+    colnames(samples) <- param_name
+  }
+
+  bayesplot::mcmc_rank_hist(samples, pars = param_name) +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(
+      title = paste("Rank Histogram:", param_name),
+      subtitle = "Uniformity check for proper posterior exploration."
+    )
+}
+
 #' Calculate MCMC Summary Statistics and Effective Sample Size
 #'
 #' @param samples A numeric matrix or data frame of MCMC samples.
@@ -139,17 +159,69 @@ generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = "
     p_trace <- plot_mcmc_trace(all_samples, p_name, tv)
     p_dens <- plot_posterior_density(all_samples, p_name, tv)
     p_acf <- plot_mcmc_acf(all_samples, p_name)
+    p_rank <- plot_mcmc_rank(all_samples, p_name)
 
     ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_trace.png")), p_trace, width = 8, height = 4, dpi = 300)
     ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_density.png")), p_dens, width = 8, height = 4, dpi = 300)
     ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_acf.png")), p_acf, width = 8, height = 4, dpi = 300)
+    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_rank.png")), p_rank, width = 8, height = 4, dpi = 300)
   }
 
-  # Print Summary Table
+  # 2. Print Summary Table to Console
   summary_stats <- summarize_mcmc_results(all_samples)
   message("\n--- MCMC DIAGNOSTIC SUMMARY ---\n")
   print(summary_stats, row.names = FALSE)
   message("\n-------------------------------\n")
+
+  # 3. Handle PDF Appendix Generation via RMarkdown
+  # Construct a consolidated plot list for rmarkdown
+  plot_list <- list()
+  for (p_name in params) {
+    # Determine true value if provided
+    tv <- NULL
+    if (!is.null(true_params)) {
+      if (p_name == "sigma2") {
+        tv <- true_params$sigma2
+      } else if (p_name == "intercept") {
+        tv <- true_params$beta[1]
+      } else if (grepl("^phi", p_name)) {
+        idx <- as.numeric(gsub("phi", "", p_name))
+        tv <- true_params$beta[idx + 1]
+      }
+    }
+    
+    plot_list[[p_name]] <- list(
+      trace = plot_mcmc_trace(all_samples, p_name, tv),
+      density = plot_posterior_density(all_samples, p_name, tv),
+      acf = plot_mcmc_acf(all_samples, p_name),
+      rank = plot_mcmc_rank(all_samples, p_name)
+    )
+  }
+
+  # Render RMarkdown if template exists and rmarkdown is available
+  template_path <- system.file("rmarkdown/templates/diagnostics_appendix.Rmd", package = "bayesian.mcmc.engine")
+  # Fallback for local development if package not installed
+  if (template_path == "" && file.exists("inst/rmarkdown/templates/diagnostics_appendix.Rmd")) {
+    template_path <- "inst/rmarkdown/templates/diagnostics_appendix.Rmd"
+  }
+
+  if (requireNamespace("rmarkdown", quietly = TRUE) && template_path != "") {
+    pdf_out <- "docs/reports/appendices/diagnostics_result.pdf"
+    if (!dir.exists(dirname(pdf_out))) dir.create(dirname(pdf_out), recursive = TRUE)
+    
+    # Render with local environment variables
+    params_summary <- summary_stats
+    rmarkdown::render(
+      input = template_path,
+      output_file = basename(pdf_out),
+      output_dir = dirname(pdf_out),
+      envir = environment(),
+      quiet = TRUE
+    )
+    message("SUCCESS: Diagnostic Appendix PDF generated at ", pdf_out)
+  } else {
+    message("PDF rendering skipped: rmarkdown or template not available.")
+  }
 
   invisible(summary_stats)
 }
