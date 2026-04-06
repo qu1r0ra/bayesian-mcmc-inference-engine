@@ -7,7 +7,7 @@
 generate_diagnostic_appendix(
   fit,
   true_params = NULL,
-  output_dir = "assets/figures/diagnostics/"
+  output_dir = project_config$assets_dir
 )
 }
 \arguments{
@@ -15,7 +15,7 @@ generate_diagnostic_appendix(
 
 \item{true_params}{Optional list with 'beta' and 'sigma2' for ground truth overlays.}
 
-\item{output_dir}{Path to save the PNG assets.}
+\item{output_dir}{Path to save the PNG assets. Defaults to project_config$assets_dir.}
 }
 \description{
 This function automates the generation of diagnostics for all parameters in a fit object.
