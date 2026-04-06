@@ -4,7 +4,7 @@ pkgload::load_all(".")
 message("--- PHASE 3: AR(p) DATA SIMULATION ---\n")
 
 # 1. Establish Ground Truth via Centralized Config
-set.seed(42)
+set.seed(project_config$default_seed)
 message("1. Generating synthetic AR(2) series...")
 y <- simulate_ar_process(
     n = project_config$sim_n,

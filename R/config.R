@@ -15,6 +15,9 @@ project_config <- list(
   forecast_assets_dir = "assets/forecasting",
   reports_dir = "docs/reports",
 
+  # --- Reproducibility Defaults ---
+  default_seed = 42,
+
   # --- Simulation Defaults ---
   default_sim_burn_in = 100,
 

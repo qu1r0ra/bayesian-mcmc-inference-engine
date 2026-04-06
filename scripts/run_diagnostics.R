@@ -4,7 +4,7 @@ pkgload::load_all(".")
 message("--- PHASE 5: MCMC DIAGNOSTICS ---\n")
 
 # 1. Establish Ground Truth via Centralized Config
-set.seed(42)
+set.seed(project_config$default_seed)
 message("1. Simulating AR(2) process...")
 y <- simulate_ar_process(
     n = project_config$sim_n,
