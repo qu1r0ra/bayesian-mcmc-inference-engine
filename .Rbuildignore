@@ -1,0 +1,15 @@
+^bayesian\.mcmc\.engine\.Rcheck$
+^\.Rhistory$
+^\.Rproj\.user$
+^README\.md$
+^\.gitignore$
+^\.lintr$
+^\.vscode$
+^Makefile$
+^docs$
+^misc$
+^assets$
+^\.github$
+^LICENSE$
+^NEWS\.md$
+^\.Rbuildignore$
