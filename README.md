@@ -32,11 +32,12 @@ A high-level overview of the repository organization:
 ```text
 .
 ├── DESCRIPTION             # R Package manifest and dependencies
-├── Makefile                # Unified task runner (Check, Test, Simulate)
+├── Makefile                # Unified task runner (Check, Test, Diagnostics)
 ├── NAMESPACE               # (Generated) Package exports and imports
+├── NEWS.md                 # Project version history
 ├── R/                      # Core MCMC Engine modules
 │   ├── data_simulation.R   # Ground truth AR(p) generation (Phase 3)
-│   ├── diagnostics.R       # Chain mixing and ESS calculations (Phase 5)
+│   ├── diagnostics.R       # Chain mixing, ESS, and PDF reporting (Phase 5)
 │   ├── forecasting.R       # Posterior predictive forecasting (Phase 6)
 │   ├── mcmc_engine.R       # Core Gibbs sampling logic (Phase 4)
 │   └── utils.R             # Matrix prep and time-series lags
@@ -44,8 +45,11 @@ A high-level overview of the repository organization:
 │   ├── architecture.md     # Technical design and logic overview
 │   ├── math/               # LaTeX-based mathematical derivations
 │   ├── reports/            # Placeholder for final PDF submission
+│   │   └── appendices/     # Automated PDF Diagnostic Appendix
 │   ├── sample/             # Benchmark samples and output expectations
 │   └── specs/              # Course requirements and phase tracking
+├── assets/                 # MCMC diagnostic PNG assets
+├── inst/                   # Package assets (RMarkdown templates)
 ├── man/                    # (Generated) Help documentation (.Rd files)
 ├── misc/                   # Internal context and reference materials
 │   ├── context/            # AI Agent persistent memory

@@ -51,15 +51,15 @@
 
 ## Phase 5: Diagnostics & Results
 
-- [ ] **Establish Diagnostics Suite**
-  - [ ] Implement trace and density plots via `bayesplot`.
-  - [ ] Implement ACF and rank plots for convergence checks.
-- [ ] **Quantify Posterior Evidence**
-  - [ ] Calculate ESS and point estimates (Mean, SD, Credible Intervals).
-  - [ ] Output clean summary table to console.
-- [ ] **Automate Artifact Generation**
-  - [ ] Save high-resolution PNGs to `assets/figures/diagnostics/`.
-  - [ ] Generate comprehensive **Diagnostic Appendix** PDF in `docs/reports/appendices/`.
+- [x] **Establish Diagnostics Suite**
+  - [x] Implement trace and density plots via `bayesplot`.
+  - [x] Implement ACF and rank plots for convergence checks.
+- [x] **Quantify Posterior Evidence**
+  - [x] Calculate ESS and point estimates (Mean, SD, Credible Intervals).
+  - [x] Output clean summary table to console.
+- [x] **Automate Artifact Generation**
+  - [x] Save high-resolution PNGs to `assets/figures/diagnostics/`.
+  - [x] Generate comprehensive **Diagnostic Appendix** PDF in `docs/reports/appendices/`.
 
 ## Phase 6: Forecasting & Uncertainty Quantification
 

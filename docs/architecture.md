@@ -9,12 +9,18 @@ This document describes the architectural design and directory structure of the 
 ├── .github/                # CI/CD Workflows (GitHub Actions)
 ├── .vscode/                # Editor-specific configurations
 ├── assets/                 # Graphics and static assets for project visuals
+│   └── figures/
+│       └── diagnostics/    # Automated MCMC diagnostic PNGs (Phase 5)
 ├── docs/                   # Project documentation
 │   ├── architecture.md     # Technical design (this document)
 │   ├── math/               # LaTeX-based mathematical derivations
 │   ├── reports/            # Output directory for final PDF submission
+│   │   └── appendices/     # Automated Diagnostic Appendix PDFs
 │   ├── sample/             # Reference materials and benchmark samples
 │   └── specs/              # Course requirements and project todos
+├── inst/                   # Package assets for installation
+│   └── rmarkdown/
+│       └── templates/      # Automated PDF report templates (Phase 5)
 ├── man/                    # Generated help documentation (.Rd files)
 ├── misc/                   # Miscellaneous context and internal notes
 │   ├── context/            # AI Agent persistent memory (metacontext.md)
@@ -22,7 +28,7 @@ This document describes the architectural design and directory structure of the 
 │   └── personal/           # Developer notes and private checklists
 ├── R/                      # Core MCMC Engine modules
 │   ├── data_simulation.R   # Ground truth AR(p) generation (Phase 3)
-│   ├── diagnostics.R       # Chain mixing and ESS calculations (Phase 5)
+│   ├── diagnostics.R       # Chain mixing, ESS, and PDF automation (Phase 5)
 │   ├── forecasting.R       # Posterior predictive forecasting (Phase 6)
 │   ├── mcmc_engine.R       # Core Gibbs sampling loop (Phase 4)
 │   └── utils.R             # Matrix prep and time-series lags
@@ -30,10 +36,12 @@ This document describes the architectural design and directory structure of the 
 │   ├── testthat/           # Component-specific test files
 │   └── testthat.R          # Test entry point for the engine
 ├── .lintr                  # Static analysis and style configuration
+├── .Rbuildignore           # Package build exclusion rules
 ├── DESCRIPTION             # R Package manifest and dependencies
 ├── LICENSE                 # MIT License details
-├── Makefile                # Unified task runner (simulate, check, test)
-└── NAMESPACE               # Generated package exports
+├── Makefile                # Unified task runner (simulate, diagnostics, check)
+├── NAMESPACE               # Generated package exports
+└── NEWS.md                 # Project version history and changelog
 ```
 
 ## Core Design Principles
