@@ -128,9 +128,9 @@ summarize_mcmc_results <- function(samples) {
 #'
 #' @param fit A list containing the MCMC results (beta_samples, sigma2_samples).
 #' @param true_params Optional list with 'beta' and 'sigma2' for ground truth overlays.
-#' @param output_dir Path to save the PNG assets.
+#' @param output_dir Path to save the PNG assets. Defaults to project_config$assets_dir.
 #' @export
-generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = "assets/figures/diagnostics/") {
+generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = project_config$assets_dir) {
   if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
 
   # Prepare sample matrices
@@ -161,10 +161,19 @@ generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = "
     p_acf <- plot_mcmc_acf(all_samples, p_name)
     p_rank <- plot_mcmc_rank(all_samples, p_name)
 
-    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_trace.png")), p_trace, width = 8, height = 4, dpi = 300)
-    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_density.png")), p_dens, width = 8, height = 4, dpi = 300)
-    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_acf.png")), p_acf, width = 8, height = 4, dpi = 300)
-    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_rank.png")), p_rank, width = 8, height = 4, dpi = 300)
+    # Use centralized resolution/DPI settings
+    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_trace.png")), p_trace,
+      width = project_config$plot_width, height = project_config$plot_height / 2, dpi = project_config$plot_dpi
+    )
+    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_density.png")), p_dens,
+      width = project_config$plot_width, height = project_config$plot_height / 2, dpi = project_config$plot_dpi
+    )
+    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_acf.png")), p_acf,
+      width = project_config$plot_width, height = project_config$plot_height / 2, dpi = project_config$plot_dpi
+    )
+    ggplot2::ggsave(file.path(output_dir, paste0(p_name, "_rank.png")), p_rank,
+      width = project_config$plot_width, height = project_config$plot_height / 2, dpi = project_config$plot_dpi
+    )
   }
 
   # 2. Print Summary Table to Console
@@ -174,7 +183,6 @@ generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = "
   message("\n-------------------------------\n")
 
   # 3. Handle PDF Appendix Generation via RMarkdown
-  # Construct a consolidated plot list for rmarkdown
   plot_list <- list()
   for (p_name in params) {
     # Determine true value if provided
@@ -198,18 +206,14 @@ generate_diagnostic_appendix <- function(fit, true_params = NULL, output_dir = "
     )
   }
 
-  # Render RMarkdown if template exists and rmarkdown is available
-  template_path <- system.file("rmarkdown/templates/diagnostics_appendix.Rmd", package = "bayesian.mcmc.engine")
-  # Fallback for local development if package not installed
-  if (template_path == "" && file.exists("inst/rmarkdown/templates/diagnostics_appendix.Rmd")) {
-    template_path <- "inst/rmarkdown/templates/diagnostics_appendix.Rmd"
-  }
+  # Resolve template path via centralized helper
+  template_path <- get_template_path(project_config$diagnostic_template)
 
   if (requireNamespace("rmarkdown", quietly = TRUE) &&
     rmarkdown::pandoc_available() &&
     template_path != "") {
-    # Generate report relative to assets directory if not absolute
-    pdf_out <- file.path(output_dir, "report/diagnostics_result.pdf")
+    # Resolve report path via centralized config
+    pdf_out <- file.path(project_config$reports_dir, "diagnostics_result.pdf")
     if (!dir.exists(dirname(pdf_out))) dir.create(dirname(pdf_out), recursive = TRUE)
 
     # Render with local environment variables

@@ -9,7 +9,7 @@
 #' @param burn_in Number of initial observations to discard to stabilize the series.
 #' @return A numeric vector of length \(n\).
 #' @export
-simulate_ar_process <- function(n, intercept, phi, sigma, burn_in = 100) {
+simulate_ar_process <- function(n, intercept, phi, sigma, burn_in = project_config$default_sim_burn_in) {
   p <- length(phi)
   total_n <- n + burn_in
   y <- numeric(total_n)

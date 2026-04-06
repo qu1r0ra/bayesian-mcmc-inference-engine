@@ -9,7 +9,10 @@
 #' @param priors A list containing hyperparameters for the MVN and IG priors.
 #' @return A list containing the posterior samples for \(\beta\) and \(\sigma^2\).
 #' @export
-run_gibbs_sampler <- function(y, p, n_iter = 10000, burn_in = 1000, priors = NULL) {
+run_gibbs_sampler <- function(y, p,
+                              n_iter = project_config$default_n_iter,
+                              burn_in = project_config$default_burn_in,
+                              priors = NULL) {
   if (!is.numeric(y)) {
     stop("y must be a numeric vector.")
   }
@@ -34,10 +37,10 @@ run_gibbs_sampler <- function(y, p, n_iter = 10000, burn_in = 1000, priors = NUL
 
   if (is.null(priors)) {
     priors <- list(
-      mu0 = rep(0, k),
-      Lambda0 = diag(100, k),
-      a0 = 2,
-      b0 = 1
+      mu0 = rep(project_config$prior_mu0, k),
+      Lambda0 = diag(project_config$prior_Lambda0_diag, k),
+      a0 = project_config$prior_a0,
+      b0 = project_config$prior_b0
     )
   }
 
@@ -71,18 +74,18 @@ run_gibbs_sampler <- function(y, p, n_iter = 10000, burn_in = 1000, priors = NUL
   sigma2_curr <- var(Y)
 
   for (iter in seq_len(n_iter)) {
+    # Step: Sample beta | y, sigma2
     Lambda_n <- solve(Lambda0_inv + (1 / sigma2_curr) * XtX)
     mu_n <- Lambda_n %*% (Lambda0_inv %*% mu0 + (1 / sigma2_curr) * XtY)
 
-    z <- rnorm(k)
-    chol_Lambda_n <- chol(Lambda_n)
-    beta_curr <- as.vector(mu_n + t(chol_Lambda_n) %*% z)
+    beta_curr <- as.vector(MASS::mvrnorm(1, mu = mu_n, Sigma = Lambda_n))
 
+    # Step: Sample sigma2 | y, beta
     resid <- Y - X %*% beta_curr
     a_n <- a0 + n_obs / 2
     b_n <- b0 + 0.5 * drop(crossprod(resid))
 
-    sigma2_curr <- rinvgamma(1, shape = a_n, scale = b_n)
+    sigma2_curr <- invgamma::rinvgamma(1, shape = a_n, rate = b_n)
 
     beta_samples[iter, ] <- beta_curr
     sigma2_samples[iter] <- sigma2_curr
