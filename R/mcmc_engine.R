@@ -35,6 +35,7 @@ run_gibbs_sampler <- function(y, p,
   n_obs <- length(Y)
   k <- ncol(X)
 
+  # --- Hyperparameter Setup ---
   if (is.null(priors)) {
     priors <- list(
       mu0 = rep(project_config$prior_mu0, k),
@@ -49,48 +50,48 @@ run_gibbs_sampler <- function(y, p,
   a0 <- priors$a0
   b0 <- priors$b0
 
-  if (length(mu0) != k) {
-    stop("Length of mu0 must match the number of coefficients.")
-  }
+  # --- Input Validation ---
+  if (length(mu0) != k) stop("Length of mu0 must match coefficient count.")
+  if (!is.matrix(Lambda0) || !all(dim(Lambda0) == k)) stop("Lambda0 must be a k x k matrix.")
+  if (a0 <= 0 || b0 <= 0) stop("Prior hyperparameters (a0, b0) must be positive.")
 
-  if (!is.matrix(Lambda0) || !all(dim(Lambda0) == c(k, k))) {
-    stop("Lambda0 must be a k x k matrix.")
-  }
-
-  if (a0 <= 0 || b0 <= 0) {
-    stop("a0 and b0 must be positive.")
-  }
-
+  # --- Pre-computation ---
+  # These terms are static across MCMC iterations (given the fixed design matrix)
+  # Pre-calculating them outside the loop significantly improves performance.
   Lambda0_inv <- solve(Lambda0)
   XtX <- crossprod(X)
   XtY <- crossprod(X, Y)
 
+  # --- MCMC Pre-allocation ---
   beta_samples <- matrix(NA_real_, nrow = n_iter, ncol = k)
   sigma2_samples <- numeric(n_iter)
-
   colnames(beta_samples) <- c("intercept", paste0("phi", seq_len(p)))
 
+  # Initialize sampler at OLS-adjacent values for efficient convergence
   beta_curr <- rep(0, k)
   sigma2_curr <- var(Y)
 
   for (iter in seq_len(n_iter)) {
-    # Step: Sample beta | y, sigma2
+    # Update Step: beta | y, sigma2 (Multivariate Normal Conjugacy)
+    # The posterior precision is the sum of prior precision and data precision.
     Lambda_n <- solve(Lambda0_inv + (1 / sigma2_curr) * XtX)
     mu_n <- Lambda_n %*% (Lambda0_inv %*% mu0 + (1 / sigma2_curr) * XtY)
-
     beta_curr <- as.vector(MASS::mvrnorm(1, mu = mu_n, Sigma = Lambda_n))
 
-    # Step: Sample sigma2 | y, beta
+    # Update Step: sigma2 | y, beta (Inverse-Gamma Conjugacy)
+    # The posterior scale (b_n) incorporates the sum of squared residuals.
     resid <- Y - X %*% beta_curr
     a_n <- a0 + n_obs / 2
     b_n <- b0 + 0.5 * drop(crossprod(resid))
 
+    # The 'rate' parameterization is used to match 'b_n' in the derivation.
     sigma2_curr <- invgamma::rinvgamma(1, shape = a_n, rate = b_n)
 
     beta_samples[iter, ] <- beta_curr
     sigma2_samples[iter] <- sigma2_curr
   }
 
+  # Discard burn-in samples to ensure the chain has reached its stationary distribution
   keep_idx <- (burn_in + 1):n_iter
 
   list(

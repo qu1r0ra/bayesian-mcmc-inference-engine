@@ -7,6 +7,10 @@ This document captures high-level insights, architectural decisions, and documen
 - **Stylistic Constraints:** Avoid the use of emojis in any part of the project (code, documentation, or commit messages) to maintain a professional, academic tone.
 - **Directory Protection:** **NEVER** modify or overwrite files in the `docs/sample/` directory. These are frozen as references provided by the instructor for compliance verification.
 - **Formatting:** Encourage the use of **Markdown** formatting and $\LaTeX$ mathematical notation for all technical variables and equations to ensure high readability and publication-quality documentation.
+- **Commenting Philosophy:** Follow a **"Pragmatic & Contextual"** approach.
+  - **Focus on the "Why":** Comments should explain the mathematical rationale or architectural intent behind non-obvious logic (e.g., matrix algebra or prior choices).
+  - **Avoid the Obvious:** Do not use comments to describe standard R procedures (e.g., avoid `# loop`, `# if statement`).
+  - **LaTeX Support:** Use $\LaTeX$ in comments wherever possible for clarity.
 
 Our group chose **10. Autoregressive AR(p) Time Series Forecasting** from the topic list.
 
