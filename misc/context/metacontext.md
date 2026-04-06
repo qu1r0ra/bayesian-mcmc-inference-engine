@@ -41,10 +41,16 @@ To ensure accurate documentation retrieval for this Bayesian MCMC project, use t
 
 ## Workflow & Documentation Decisions
 
-### Phase Swap (MCMC vs. Simulation)
+### Implementation Milestones
 
-- **Phase 3 (MCMC Logic & Implementation)** and **Phase 4 (Simulation & Verification)** were swapped in the master plan.
-- Building the engine logic first allows for mathematical unit testing against known distribution properties before generating the specific synthetic datasets.
+- [x] **Phase 3 (Ground Truth Simulation & Verification):** Developed a ground-truth AR($p$) simulator and verified the data-generating process (GGP).
+- [x] **Phase 4 (MCMC Logic & Implementation):** Successfully implemented the Gibbs sampler in `R/mcmc_engine.R` and verified parameter recovery via automated unit tests in `tests/testthat/test-mcmc-engine.R`.
+- **Status:** The engine is feature-complete for core inference. We have officially established the **[Phase 5 Blueprint](file:///home/qu1r0ra/Documents/GitHub/bayesian-mcmc-inference-engine/docs/specs/phase-5-blueprint.md)**, prioritizing `bayesplot`/`ggplot2` for diagnostics and automated PDF reporting.
+
+### Development Workflow
+
+- **Phase Sequence:** Ground Truth Simulation (Phase 3) is established first to provide a "Gold Standard" for the Inference Engine (Phase 4).
+- **Reasoning:** This allows us to verify that the MCMC engine correctly recovers known parameters, ensuring mathematical validity before applying the model to real-world billing data.
 
 ### Reporting & Typography
 

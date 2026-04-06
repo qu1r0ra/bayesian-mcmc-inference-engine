@@ -21,10 +21,10 @@ This document describes the architectural design and directory structure of the 
 │   ├── materials/          # Reference lecture slides and papers
 │   └── personal/           # Developer notes and private checklists
 ├── R/                      # Core MCMC Engine modules
-│   ├── data_simulation.R   # Ground truth AR(p) generation (Phase 4)
+│   ├── data_simulation.R   # Ground truth AR(p) generation (Phase 3)
 │   ├── diagnostics.R       # Chain mixing and ESS calculations (Phase 5)
 │   ├── forecasting.R       # Posterior predictive forecasting (Phase 6)
-│   ├── mcmc_engine.R       # Core Gibbs sampling loop (Phase 3)
+│   ├── mcmc_engine.R       # Core Gibbs sampling loop (Phase 4)
 │   └── utils.R             # Matrix prep and time-series lags
 ├── tests/                  # Unit testing suite (testthat)
 │   ├── testthat/           # Component-specific test files
@@ -56,8 +56,8 @@ To ensure high-performance sampling without the tuning overhead of Metropolis-Ha
 
 The engine is strictly modularized to support "Phase-based" development:
 
-- **`mcmc_engine.R`**: The core iterative logic, decoupled from data source or plotting (Phase 3).
-- **`data_simulation.R`**: Verification tool to establish a known ground truth (Phase 4).
+- **`mcmc_engine.R`**: The core iterative logic, decoupled from data source or plotting (Phase 4).
+- **`data_simulation.R`**: Verification tool to establish a known ground truth (Phase 3).
 - **`diagnostics.R`**: Visualization and convergence testing (Trace plots, density, ESS).
 
 ### 4. Unified R Package API
