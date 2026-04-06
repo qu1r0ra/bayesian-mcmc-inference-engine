@@ -8,16 +8,15 @@ This document describes the architectural design and directory structure of the 
 .
 ├── .github/                # CI/CD Workflows (GitHub Actions)
 ├── .vscode/                # Editor-specific configurations
-├── assets/                 # Graphics and static assets for project visuals
-│   └── figures/
-│       └── diagnostics/    # Automated MCMC diagnostic PNGs (Phase 5)
+├── assets/                 # MCMC diagnostic and forecast PNG assets
+│   ├── diagnostics/        # Automated MCMC diagnostic PNGs (Phase 5)
+│   └── forecasting/        # Future billing projections (Phase 6)
 ├── docs/                   # Project documentation
 │   ├── architecture.md     # Technical design (this document)
-│   ├── math/               # LaTeX-based mathematical derivations
-│   ├── reports/            # Output directory for final PDF submission
-│   │   └── appendices/     # Automated Diagnostic Appendix PDFs
+│   ├── design/             # Math derivations and blueprints (Phase 2 & 5)
+│   ├── reports/            # Output directory for final PDF reports
 │   ├── sample/             # Reference materials and benchmark samples
-│   └── specs/              # Course requirements and project todos
+│   └── specs/              # Course requirements and task tracking
 ├── inst/                   # Package assets for installation
 │   └── rmarkdown/
 │       └── templates/      # Automated PDF report templates (Phase 5)
@@ -27,11 +26,14 @@ This document describes the architectural design and directory structure of the 
 │   ├── materials/          # Reference lecture slides and papers
 │   └── personal/           # Developer notes and private checklists
 ├── R/                      # Core MCMC Engine modules
+│   ├── config.R            # Project-wide constants and path manager
 │   ├── data_simulation.R   # Ground truth AR(p) generation (Phase 3)
 │   ├── diagnostics.R       # Chain mixing, ESS, and PDF automation (Phase 5)
 │   ├── forecasting.R       # Posterior predictive forecasting (Phase 6)
 │   ├── mcmc_engine.R       # Core Gibbs sampling loop (Phase 4)
 │   └── utils.R             # Matrix prep and time-series lags
+├── scripts/                # Execution entry points
+│   └── demo_diagnostics.R  # End-to-end simulation and validation script
 ├── tests/                  # Unit testing suite (testthat)
 │   ├── testthat/           # Component-specific test files
 │   └── testthat.R          # Test entry point for the engine

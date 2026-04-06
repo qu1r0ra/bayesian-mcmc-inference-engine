@@ -4,7 +4,7 @@
 - [x] Phase 2: Mathematical Formulation (AR(p) + Gibbs Sampler)
 - [x] Phase 3: Ground Truth Simulation & Verification (The Ground Truth)
 - [x] Phase 4: MCMC Logic & Implementation (The Engine)
-- [ ] Phase 5: Diagnostics & Results
+- [x] Phase 5: Diagnostics & Results
 - [ ] Phase 6: Forecasting & Uncertainty Quantification
 - [ ] Phase 7: Final Documentation & Report
 
@@ -58,8 +58,11 @@
   - [x] Calculate ESS and point estimates (Mean, SD, Credible Intervals).
   - [x] Output clean summary table to console.
 - [x] **Automate Artifact Generation**
-  - [x] Save high-resolution PNGs to `assets/figures/diagnostics/`.
-  - [x] Generate comprehensive **Diagnostic Appendix** PDF in `docs/reports/appendices/`.
+  - [x] Save high-resolution PNGs to `assets/diagnostics/`.
+  - [x] Generate comprehensive **Diagnostic Appendix** PDF in `docs/reports/`.
+  - [x] **Centralize Configuration**
+    - [x] Refactor all paths and ground-truth constants to `R/config.R`.
+    - [x] Implement `Makefile` triggers for sequential results generation.
 
 ## Phase 6: Forecasting & Uncertainty Quantification
 
