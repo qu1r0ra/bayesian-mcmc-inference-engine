@@ -1,7 +1,10 @@
-.PHONY: install format lint test doc check simulate
+.PHONY: install format lint test doc check simulate diagnostics forecast report results
 
-# Default target: Run a full project check
-all: check
+# Default target: Run everything
+all: check results
+
+# Results Pipeline (Phase 3 -> 5 -> 6 -> 7)
+results: simulate diagnostics forecast report
 
 # Install necessary R dependencies from DESCRIPTION file
 install:
@@ -29,8 +32,16 @@ check: format lint test doc
 
 # Run the ground truth data simulation (Phase 3)
 simulate:
-	Rscript R/data_simulation.R
+	Rscript scripts/simulate_data.R
 
 # Generate Phase 5 diagnostics and results summary
 diagnostics:
-	Rscript misc/demo_diagnostics.R
+	Rscript scripts/run_diagnostics.R
+
+# Generate Phase 6 posterior predictive forecasts
+forecast:
+	Rscript scripts/generate_forecasts.R
+
+# Generate Phase 7 final submission report
+report:
+	Rscript scripts/final_report.R
