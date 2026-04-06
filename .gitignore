@@ -53,6 +53,18 @@ po/*~
 rsconnect/
 
 # Generated Artifacts (Phase 5+)
-assets/figures/diagnostics/
-docs/reports/appendices/
-docs/reports/diagnostics_result.pdf
+assets/diagnostics/
+assets/forecasting/
+docs/reports/*.pdf
+docs/reports/*.html
+
+# LaTeX temporary files
+docs/reports/*.aux
+docs/reports/*.log
+docs/reports/*.out
+docs/reports/*.toc
+docs/reports/*.vrb
+docs/reports/*.snm
+docs/reports/*.nav
+docs/reports/*.fdb_latexmk
+docs/reports/*.fls
