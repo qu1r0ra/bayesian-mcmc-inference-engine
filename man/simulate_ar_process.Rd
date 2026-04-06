@@ -4,7 +4,13 @@
 \alias{simulate_ar_process}
 \title{Simulate AR(p) Time Series for Ground Truth}
 \usage{
-simulate_ar_process(n, intercept, phi, sigma, burn_in = 100)
+simulate_ar_process(
+  n,
+  intercept,
+  phi,
+  sigma,
+  burn_in = project_config$default_sim_burn_in
+)
 }
 \arguments{
 \item{n}{Total number of observations to generate.}

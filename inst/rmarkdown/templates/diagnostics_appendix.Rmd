@@ -1,0 +1,65 @@
+---
+title: "MCMC Diagnostic Appendix"
+author: "Bayesian AR(p) Engine"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(bayesplot)
+library(ggplot2)
+```
+
+# Executive Summary
+
+This appendix provides the diagnostic verification for the Bayesian AR(p) model fit. We assess chain convergence, mixing efficiency, and parameter recovery against the ground truth.
+
+## Statistical Summary
+
+```{r summary_table}
+# The 'params_summary' object should be passed from the environment
+if (exists("params_summary")) {
+  knitr::kable(params_summary, digits = 3, caption = "Posterior Summary Statistics")
+} else {
+  cat("Summary statistics not available.")
+}
+```
+
+# Parameter Diagnostics
+
+```{r diagnostics_loop, results='asis'}
+# The 'plot_list' object should be passed from the environment
+if (exists("plot_list")) {
+  for (p_name in names(plot_list)) {
+    cat("\n## Parameter:", p_name, "\n")
+
+    # Trace Plot
+    print(plot_list[[p_name]]$trace)
+    cat("\n\n")
+
+    # Density Plot
+    print(plot_list[[p_name]]$density)
+    cat("\n\n")
+
+    # ACF Plot
+    print(plot_list[[p_name]]$acf)
+    cat("\n\n")
+
+    # Rank Plot
+    print(plot_list[[p_name]]$rank)
+    cat("\n\n")
+  }
+} else {
+  cat("No plots found in the list.")
+}
+```
+
+\newpage
+
+# Glossary
+
+- **ESS (Effective Sample Size):** Number of independent draws equivalent to the total samples.
+- **95% HPD (Highest Posterior Density):** The narrowest interval containing 95% of the posterior mass.
+- **Trace Plots:** Used to visually inspect convergence and mixing.
+- **Rank Histograms:** Used to verify uniform exploration of the posterior logic.

@@ -40,22 +40,3 @@ create_response_vector <- function(y, p) {
   # Response starts from y_{p+1} to y_n
   y[(p + 1):n]
 }
-
-
-#' Sample from an Inverse-Gamma Distribution
-#'
-#' This is used for sampling the variance parameter \(\sigma^2\) in the Gibbs sampler.
-#'
-#' @param n Number of samples.
-#' @param shape Shape parameter (a).
-#' @param scale Scale parameter (b).
-#' @return A numeric vector of inverse-gamma samples.
-#' @export
-rinvgamma <- function(n, shape, scale) {
-  if (shape <= 0 || scale <= 0) {
-    stop("shape and scale must be positive.")
-  }
-
-  # Using relationship: IG(a,b) = 1 / Gamma(a, rate = b)
-  1 / rgamma(n, shape = shape, rate = scale)
-}

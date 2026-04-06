@@ -5,7 +5,12 @@ This document captures high-level insights, architectural decisions, and documen
 ## Project Preferences
 
 - **Stylistic Constraints:** Avoid the use of emojis in any part of the project (code, documentation, or commit messages) to maintain a professional, academic tone.
+- **Directory Protection:** **NEVER** modify or overwrite files in the `docs/sample/` directory. These are frozen as references provided by the instructor for compliance verification.
 - **Formatting:** Encourage the use of **Markdown** formatting and $\LaTeX$ mathematical notation for all technical variables and equations to ensure high readability and publication-quality documentation.
+- **Commenting Philosophy:** Follow a **"Pragmatic & Contextual"** approach.
+  - **Focus on the "Why":** Comments should explain the mathematical rationale or architectural intent behind non-obvious logic (e.g., matrix algebra or prior choices).
+  - **Avoid the Obvious:** Do not use comments to describe standard R procedures (e.g., avoid `# loop`, `# if statement`).
+  - **LaTeX Support:** Use $\LaTeX$ in comments wherever possible for clarity.
 
 Our group chose **10. Autoregressive AR(p) Time Series Forecasting** from the topic list.
 
@@ -23,6 +28,7 @@ Our group chose **10. Autoregressive AR(p) Time Series Forecasting** from the to
 - **Priors:** Conjugate priors are used to allow for closed-form full conditionals.
   - **Coefficients ($\beta$):** Multivariate Normal (MVN) prior.
   - **Error Variance ($\sigma^2$):** Inverse-Gamma (IG) prior.
+- **Library Permissions:** Based on the official `docs/sample/mco2-sample.R`, it is **confirmed** that specialized libraries (e.g., `MASS`, `coda`, `bayesplot`, `pgdraw`) are permitted for sampling individual components and diagnostics, provided the high-level MCMC loop itself is manually implemented.
 - **Implementation:** Pure R implementation for transparency and adherence to project "from-scratch" requirements. Optimization via `Rcpp` is deprioritized in favor of code clarity.
 
 ## External Library Context (context7)
@@ -41,10 +47,18 @@ To ensure accurate documentation retrieval for this Bayesian MCMC project, use t
 
 ## Workflow & Documentation Decisions
 
-### Phase Swap (MCMC vs. Simulation)
+### Implementation Milestones
 
-- **Phase 3 (MCMC Logic & Implementation)** and **Phase 4 (Simulation & Verification)** were swapped in the master plan.
-- Building the engine logic first allows for mathematical unit testing against known distribution properties before generating the specific synthetic datasets.
+- [x] **Phase 3 (Ground Truth Simulation & Verification):** Developed a ground-truth AR($p$) simulator and verified the data-generating process (GGP).
+- [x] **Phase 4 (MCMC Logic & Implementation):** Successfully implemented the Gibbs sampler in `R/mcmc_engine.R` and verified parameter recovery via automated unit tests in `tests/testthat/test-mcmc-engine.R`.
+- [x] **Phase 5 (Diagnostics & Results):** Successfully implemented the `bayesplot`/`ggplot2` diagnostic suite, automated high-resolution asset generation, and created the **Diagnostic Appendix PDF** via RMarkdown. All project constants and paths are now centralized in **`R/config.R`**. Renamed architectural logic directory to **`docs/design/`** for better context.
+- **Status:** Phase 5 is 100% complete. The engine is robustly verified with 33 passing unit tests, zero lints, and a sequential execution pipeline via `make results`.
+- **Phase 6 (Forecasting):** Initializing.
+
+### Development Workflow
+
+- **Phase Sequence:** Ground Truth Simulation (Phase 3) is established first to provide a "Gold Standard" for the Inference Engine (Phase 4).
+- **Reasoning:** This allows us to verify that the MCMC engine correctly recovers known parameters, ensuring mathematical validity before applying the model to real-world billing data.
 
 ### Reporting & Typography
 

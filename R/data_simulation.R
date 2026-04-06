@@ -9,18 +9,21 @@
 #' @param burn_in Number of initial observations to discard to stabilize the series.
 #' @return A numeric vector of length \(n\).
 #' @export
-simulate_ar_process <- function(n, intercept, phi, sigma, burn_in = 100) {
+simulate_ar_process <- function(n, intercept, phi, sigma, burn_in = project_config$default_sim_burn_in) {
   p <- length(phi)
   total_n <- n + burn_in
   y <- numeric(total_n)
 
-  # Initialize with random noise
+  # Initialize the process using its theoretical stationary mean
+  # This reduces the transient period needed to reach the steady state.
   y[1:p] <- rnorm(p, mean = intercept / (1 - sum(phi)), sd = sigma)
 
+  # Iteratively generate observations following the AR(p) process equation:
+  # y_t = c + phi1*y_{t-1} + ... + phip*y_{t-p} + epsilon_t
   for (t in (p + 1):total_n) {
     y[t] <- intercept + sum(phi * rev(y[(t - p):(t - 1)])) + rnorm(1, 0, sigma)
   }
 
-  # Return only the post-burn-in series
+  # Discard the initial transient 'burn-in' observations
   y[(burn_in + 1):total_n]
 }

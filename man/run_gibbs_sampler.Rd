@@ -4,7 +4,13 @@
 \alias{run_gibbs_sampler}
 \title{Bayesian MCMC AR(p) Gibbs Sampler}
 \usage{
-run_gibbs_sampler(y, p, n_iter = 10000, burn_in = 1000, priors = NULL)
+run_gibbs_sampler(
+  y,
+  p,
+  n_iter = project_config$default_n_iter,
+  burn_in = project_config$default_burn_in,
+  priors = NULL
+)
 }
 \arguments{
 \item{y}{Numeric vector of the observed time series.}

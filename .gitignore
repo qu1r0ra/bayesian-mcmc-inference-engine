@@ -51,3 +51,20 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+# Generated Artifacts (Phase 5+)
+assets/diagnostics/
+assets/forecasting/
+docs/reports/*.pdf
+docs/reports/*.html
+
+# LaTeX temporary files
+docs/reports/*.aux
+docs/reports/*.log
+docs/reports/*.out
+docs/reports/*.toc
+docs/reports/*.vrb
+docs/reports/*.snm
+docs/reports/*.nav
+docs/reports/*.fdb_latexmk
+docs/reports/*.fls

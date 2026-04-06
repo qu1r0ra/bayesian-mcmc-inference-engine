@@ -2,9 +2,9 @@
 
 - [x] Phase 1: Problem Definition & Selection (Topic 10: Cloud Billing)
 - [x] Phase 2: Mathematical Formulation (AR(p) + Gibbs Sampler)
-- [x] Phase 3: MCMC Logic & Implementation (The Engine)
-- [x] Phase 4: Ground Truth Simulation & Verification (The Ground Truth)
-- [ ] Phase 5: Diagnostics & Results
+- [x] Phase 3: Ground Truth Simulation & Verification (The Ground Truth)
+- [x] Phase 4: MCMC Logic & Implementation (The Engine)
+- [x] Phase 5: Diagnostics & Results
 - [ ] Phase 6: Forecasting & Uncertainty Quantification
 - [ ] Phase 7: Final Documentation & Report
 
@@ -30,34 +30,39 @@
   - [x] Posterior of coefficients given variance.
   - [x] Posterior of variance given coefficients.
 
-## Phase 3: MCMC Logic & Implementation
+## Phase 3: Ground Truth Simulation & Verification
+
+- [x] **Generate Synthetic AR(p) Series**
+  - [x] Set "true" parameters (c, phi, sigma).
+  - [x] Simulate series using the process equation.
+- [x] **Verification Readiness**
+  - [x] Ensure the output can be fed into the inference engine.
+
+## Phase 4: MCMC Logic & Implementation
 
 - [x] **Initialize the Gibbs Sampler**
   - [x] Set up iterative loop and parameter storage.
 - [x] **Update Matrix Algebra**
   - [x] Create design matrix (X) with p-lags.
-  - [x] Implement vectorsized calculations.
-- [x] **Manage MCMC Transitions**
-  - [x] Draw from conditional posteriors every iteration.
-  - [x] Implement proper burn-in period.
-
-## Phase 4: Ground Truth Simulation & Verification
-
-- [x] **Generate Synthetic AR(p) Series**
-  - [x] Set "true" parameters (c, phi, sigma).
-  - [x] Simulate series using the process equation.
+  - [x] Implement vectorized calculations.
 - [x] **Parameter Recovery Check**
   - [x] Feed synthetic series to the MCMC engine.
   - [x] Verify posterior means match "true" values.
 
 ## Phase 5: Diagnostics & Results
 
-- [ ] **Verify Chain Convergence**
-  - [ ] Generate trace plots for all parameters.
-  - [ ] Check mixing and stationarity.
-- [ ] **Quantify Posterior Evidence**
-  - [ ] Calculate Effective Sample Size (ESS).
-  - [ ] Generate kernel density plots of posteriors.
+- [x] **Establish Diagnostics Suite**
+  - [x] Implement trace and density plots via `bayesplot`.
+  - [x] Implement ACF and rank plots for convergence checks.
+- [x] **Quantify Posterior Evidence**
+  - [x] Calculate ESS and point estimates (Mean, SD, Credible Intervals).
+  - [x] Output clean summary table to console.
+- [x] **Automate Artifact Generation**
+  - [x] Save high-resolution PNGs to `assets/diagnostics/`.
+  - [x] Generate comprehensive **Diagnostic Appendix** PDF in `docs/reports/`.
+  - [x] **Centralize Configuration**
+    - [x] Refactor all paths and ground-truth constants to `R/config.R`.
+    - [x] Implement `Makefile` triggers for sequential results generation.
 
 ## Phase 6: Forecasting & Uncertainty Quantification
 

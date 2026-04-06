@@ -9,7 +9,10 @@
 #' @param priors A list containing hyperparameters for the MVN and IG priors.
 #' @return A list containing the posterior samples for \(\beta\) and \(\sigma^2\).
 #' @export
-run_gibbs_sampler <- function(y, p, n_iter = 10000, burn_in = 1000, priors = NULL) {
+run_gibbs_sampler <- function(y, p,
+                              n_iter = project_config$default_n_iter,
+                              burn_in = project_config$default_burn_in,
+                              priors = NULL) {
   if (!is.numeric(y)) {
     stop("y must be a numeric vector.")
   }
@@ -32,12 +35,13 @@ run_gibbs_sampler <- function(y, p, n_iter = 10000, burn_in = 1000, priors = NUL
   n_obs <- length(Y)
   k <- ncol(X)
 
+  # --- Hyperparameter Setup ---
   if (is.null(priors)) {
     priors <- list(
-      mu0 = rep(0, k),
-      Lambda0 = diag(100, k),
-      a0 = 2,
-      b0 = 1
+      mu0 = rep(project_config$prior_mu0, k),
+      Lambda0 = diag(project_config$prior_Lambda0_diag, k),
+      a0 = project_config$prior_a0,
+      b0 = project_config$prior_b0
     )
   }
 
@@ -46,48 +50,48 @@ run_gibbs_sampler <- function(y, p, n_iter = 10000, burn_in = 1000, priors = NUL
   a0 <- priors$a0
   b0 <- priors$b0
 
-  if (length(mu0) != k) {
-    stop("Length of mu0 must match the number of coefficients.")
-  }
+  # --- Input Validation ---
+  if (length(mu0) != k) stop("Length of mu0 must match coefficient count.")
+  if (!is.matrix(Lambda0) || !all(dim(Lambda0) == k)) stop("Lambda0 must be a k x k matrix.")
+  if (a0 <= 0 || b0 <= 0) stop("Prior hyperparameters (a0, b0) must be positive.")
 
-  if (!is.matrix(Lambda0) || !all(dim(Lambda0) == c(k, k))) {
-    stop("Lambda0 must be a k x k matrix.")
-  }
-
-  if (a0 <= 0 || b0 <= 0) {
-    stop("a0 and b0 must be positive.")
-  }
-
+  # --- Pre-computation ---
+  # These terms are static across MCMC iterations (given the fixed design matrix)
+  # Pre-calculating them outside the loop significantly improves performance.
   Lambda0_inv <- solve(Lambda0)
   XtX <- crossprod(X)
   XtY <- crossprod(X, Y)
 
+  # --- MCMC Pre-allocation ---
   beta_samples <- matrix(NA_real_, nrow = n_iter, ncol = k)
   sigma2_samples <- numeric(n_iter)
-
   colnames(beta_samples) <- c("intercept", paste0("phi", seq_len(p)))
 
+  # Initialize sampler at OLS-adjacent values for efficient convergence
   beta_curr <- rep(0, k)
   sigma2_curr <- var(Y)
 
   for (iter in seq_len(n_iter)) {
+    # Update Step: beta | y, sigma2 (Multivariate Normal Conjugacy)
+    # The posterior precision is the sum of prior precision and data precision.
     Lambda_n <- solve(Lambda0_inv + (1 / sigma2_curr) * XtX)
     mu_n <- Lambda_n %*% (Lambda0_inv %*% mu0 + (1 / sigma2_curr) * XtY)
+    beta_curr <- as.vector(MASS::mvrnorm(1, mu = mu_n, Sigma = Lambda_n))
 
-    z <- rnorm(k)
-    chol_Lambda_n <- chol(Lambda_n)
-    beta_curr <- as.vector(mu_n + t(chol_Lambda_n) %*% z)
-
+    # Update Step: sigma2 | y, beta (Inverse-Gamma Conjugacy)
+    # The posterior scale (b_n) incorporates the sum of squared residuals.
     resid <- Y - X %*% beta_curr
     a_n <- a0 + n_obs / 2
     b_n <- b0 + 0.5 * drop(crossprod(resid))
 
-    sigma2_curr <- rinvgamma(1, shape = a_n, scale = b_n)
+    # The 'rate' parameterization is used to match 'b_n' in the derivation.
+    sigma2_curr <- invgamma::rinvgamma(1, shape = a_n, rate = b_n)
 
     beta_samples[iter, ] <- beta_curr
     sigma2_samples[iter] <- sigma2_curr
   }
 
+  # Discard burn-in samples to ensure the chain has reached its stationary distribution
   keep_idx <- (burn_in + 1):n_iter
 
   list(

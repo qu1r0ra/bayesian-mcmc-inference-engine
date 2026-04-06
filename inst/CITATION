@@ -1,0 +1,12 @@
+bibentry(
+  bibtype = "Manual",
+  title = "bayesian.mcmc.engine: Bayesian MCMC Inference Engine for Time Series Forecasting",
+  author = c(
+    person("Axl Roel", "Andaya"),
+    person("Christian Joseph", "Bunyi"),
+    person("Sean Higgins", "Lim")
+  ),
+  year = "2026",
+  note = "R package version 0.1.0",
+  url = "https://github.com/qu1r0ra/bayesian-mcmc-inference-engine"
+)
