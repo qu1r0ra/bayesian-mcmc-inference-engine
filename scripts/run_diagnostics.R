@@ -31,5 +31,5 @@ generate_diagnostic_appendix(
 )
 
 message("\nDEMO COMPLETE.")
-message("Assets: assets/figures/diagnostics/")
-message("Report: docs/reports/appendices/diagnostics_result.pdf")
+message("Assets Location: ", project_config$assets_dir, "/")
+message("Report Location: ", project_config$reports_dir, "/diagnostics_result.pdf")
