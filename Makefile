@@ -30,3 +30,7 @@ check: format lint test doc
 # Run the ground truth data simulation (Phase 3)
 simulate:
 	Rscript R/data_simulation.R
+
+# Generate Phase 5 diagnostics and results summary
+diagnostics:
+	Rscript -e "pkgload::load_all('.'); source('tests/testthat/test-mcmc-engine.R'); # Add demo logic here or in a separate script"
