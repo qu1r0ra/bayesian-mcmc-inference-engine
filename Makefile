@@ -1,4 +1,4 @@
-.PHONY: install format lint test doc check simulate diagnostics forecast report results
+.PHONY: install format lint test doc check simulate diagnostics forecast report results clean
 
 # Default target: Run everything
 all: check results
@@ -45,3 +45,9 @@ forecast:
 # Generate Phase 7 final submission report
 report:
 	Rscript scripts/final_report.R
+
+# Reset project output (remove all generated plots and reports)
+clean:
+	rm -rf assets/diagnostics/*.png
+	rm -rf assets/forecasting/*.png
+	rm -rf docs/reports/*.pdf
