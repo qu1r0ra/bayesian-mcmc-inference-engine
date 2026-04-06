@@ -36,19 +36,23 @@ A high-level overview of the repository organization:
 ├── NAMESPACE               # (Generated) Package exports and imports
 ├── NEWS.md                 # Project version history
 ├── R/                      # Core MCMC Engine modules
+│   ├── config.R            # Project-wide constants and path manager
 │   ├── data_simulation.R   # Ground truth AR(p) generation (Phase 3)
 │   ├── diagnostics.R       # Chain mixing, ESS, and PDF reporting (Phase 5)
 │   ├── forecasting.R       # Posterior predictive forecasting (Phase 6)
 │   ├── mcmc_engine.R       # Core Gibbs sampling logic (Phase 4)
 │   └── utils.R             # Matrix prep and time-series lags
+├── scripts/                # Execution entry points
+│   └── demo_diagnostics.R  # End-to-end simulation and validation script
 ├── docs/                   # Full project documentation
 │   ├── architecture.md     # Technical design and logic overview
-│   ├── math/               # LaTeX-based mathematical derivations
-│   ├── reports/            # Placeholder for final PDF submission
-│   │   └── appendices/     # Automated PDF Diagnostic Appendix
+│   ├── design/             # Mathematical derivations and blueprints
+│   └── reports/            # Output directory for final PDF reports
 │   ├── sample/             # Benchmark samples and output expectations
 │   └── specs/              # Course requirements and phase tracking
-├── assets/                 # MCMC diagnostic PNG assets
+├── assets/                 # MCMC diagnostic and forecast PNG assets
+│   ├── diagnostics/        # Chain mixing and posterior plots (Phase 5)
+│   └── forecasting/        # Future billing projections (Phase 6)
 ├── inst/                   # Package assets (RMarkdown templates)
 ├── man/                    # (Generated) Help documentation (.Rd files)
 ├── misc/                   # Internal context and reference materials
