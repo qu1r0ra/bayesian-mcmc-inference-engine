@@ -9,7 +9,7 @@ test_that("create_response_vector returns correct response vector", {
 })
 
 test_that("rinvgamma returns positive samples", {
-  x <- rinvgamma(100, shape = 2, scale = 1)
+  x <- invgamma::rinvgamma(100, shape = 2, rate = 1)
 
   expect_equal(length(x), 100)
   expect_true(all(x > 0))
