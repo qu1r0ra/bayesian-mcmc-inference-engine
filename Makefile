@@ -33,4 +33,4 @@ simulate:
 
 # Generate Phase 5 diagnostics and results summary
 diagnostics:
-	Rscript -e "pkgload::load_all('.'); source('tests/testthat/test-mcmc-engine.R'); # Add demo logic here or in a separate script"
+	Rscript misc/demo_diagnostics.R
