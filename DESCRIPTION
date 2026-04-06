@@ -22,12 +22,12 @@ Imports:
     stats,
     graphics,
     utils,
-    grDevices
-Suggests:
-    testthat (>= 3.0.0),
+    grDevices,
     ggplot2,
     bayesplot,
-    coda,
+    coda
+Suggests:
+    testthat (>= 3.0.0),
     styler,
     lintr
 URL: https://github.com/qu1r0ra/bayesian-mcmc-inference-engine
