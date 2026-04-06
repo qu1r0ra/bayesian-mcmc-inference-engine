@@ -17,12 +17,15 @@ Following the project's goal for **Rich Aesthetics** and **Visual Excellence**, 
 
 The following plots MUST be generated for each parameter ($\beta$ and $\sigma^2$):
 
-| Plot Type        | Metric          | Description                                                               |
-| :--------------- | :-------------- | :------------------------------------------------------------------------ |
-| **Trace Plot**   | Mixing          | Shows the sampling path over the logic to verify stationarity and mixing. |
-| **Density/Area** | Posterior       | Displays the distribution shape and 95% credible intervals.               |
-| **ACF Plot**     | Autocorrelation | Quantifies the dependency between successive MCMC samples.                |
-| **Rank Plot**    | Convergence     | Categorical visualization of histogram ranks to complement trace plots.   |
+| Plot Type        | Metric          | Description                                                                                |
+| :--------------- | :-------------- | :----------------------------------------------------------------------------------------- |
+| **Trace Plot**   | Mixing          | Shows the sampling path over the logic to verify stationarity and mixing.                  |
+| **Density Plot** | Recovery        | Displays distribution shape with shaded 95% intervals **overlaid with ground truth line**. |
+| **ACF Plot**     | Autocorrelation | Quantifies the dependency between successive MCMC samples.                                 |
+| **Rank Plot**    | Convergence     | Categorical visualization of histogram ranks to complement trace plots.                    |
+
+> [!IMPORTANT]
+> To comply with Phase 5 of the course requirements, all Trace and Density plots MUST support a `true_value` parameter to visually demonstrate successful parameter recovery against the ground truth.
 
 ## 3. Quantitative Diagnostics
 
