@@ -2,7 +2,9 @@
 
 export(calculate_ess)
 export(create_design_matrix)
+export(create_response_vector)
 export(forecast_ar_process)
 export(plot_mcmc_trace)
+export(rinvgamma)
 export(run_gibbs_sampler)
 export(simulate_ar_process)
