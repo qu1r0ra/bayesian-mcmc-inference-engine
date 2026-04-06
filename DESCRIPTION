@@ -27,6 +27,7 @@ ByteCompile: true
 Depends:
     R (>= 4.1.0)
 Imports:
+    MASS,
     mvtnorm,
     invgamma,
     stats,
@@ -35,7 +36,9 @@ Imports:
     grDevices,
     ggplot2,
     bayesplot,
-    coda
+    coda,
+    rmarkdown,
+    knitr
 Suggests:
     testthat (>= 3.0.0),
     styler,
