@@ -13,8 +13,8 @@ As part of your submission, **please prepare a technical documentation report (i
 
 Example, for Reference of Bayesian project demonstration _(Bayesian Spam Classification via Polya-Gamma Data Augmentation)_:
 
-- [(MCO 2 Sample) Bayesian Spam Classification via Polya-Gamma Data Augmentation.pdf](../sample/mco2-sample.pdf)
-- [(MCO 2 Sample) Bayesian Spam Classification via Polya-Gamma Data Augmentation.R](../sample/mco2-sample.R)
+- [(MCO 2 Sample) Bayesian Spam Classification via Polya-Gamma Data Augmentation.pdf](../sample/report.pdf)
+- [(MCO 2 Sample) Bayesian Spam Classification via Polya-Gamma Data Augmentation.R](../sample/code.R)
 
 ## List of Topics
 
