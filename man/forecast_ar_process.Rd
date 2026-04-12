@@ -11,7 +11,7 @@ forecast_ar_process(y, p, samples, h = 30)
 
 \item{p}{Order of the AR process.}
 
-\item{samples}{Posterior samples from the Gibbs sampler.}
+\item{samples}{Posterior samples from the Gibbs sampler (matrix of betas and sigma2).}
 
 \item{h}{Forecast horizon (e.g., 30 days).}
 }
