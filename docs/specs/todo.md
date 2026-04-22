@@ -5,8 +5,8 @@
 - [x] Phase 3: Ground Truth Simulation & Verification (The Ground Truth)
 - [x] Phase 4: MCMC Logic & Implementation (The Engine)
 - [x] Phase 5: Diagnostics & Results
-- [ ] Phase 6: Forecasting & Uncertainty Quantification
-- [ ] Phase 7: Final Documentation & Report
+- [x] Phase 6: Forecasting & Uncertainty Quantification
+- [x] Phase 7: Final Documentation & Report
 
 ## Phase 1: Problem Definition & Selection
 
@@ -66,15 +66,15 @@
 
 ## Phase 6: Forecasting & Uncertainty Quantification
 
-- [ ] **Simulate Predictive Future**
-  - [ ] Iteratively generate next 30 days of billing.
-- [ ] **Quantify Range of Outcomes**
-  - [ ] Calculate 95% credible intervals for predictions.
-  - [ ] Generate probabilistic "fan plots" for forecasting.
+- [x] **Simulate Predictive Future**
+  - [x] Iteratively generate next 30 days of billing.
+- [x] **Quantify Range of Outcomes**
+  - [x] Calculate 95% credible intervals for predictions.
+  - [x] Generate probabilistic "fan plots" for forecasting.
 
 ## Phase 7: Final Documentation & Report
 
-- [ ] **Compose Technical Report**
-  - [ ] Compile LaTeX source into final PDF.
-- [ ] **Final Packaging**
-  - [ ] Ensure README, NAMESPACE, and documentation are synchronized.
+- [x] **Compose Technical Report**
+  - [x] Compile LaTeX source into final PDF.
+- [x] **Final Packaging**
+  - [x] Ensure README, NAMESPACE, and documentation are synchronized.

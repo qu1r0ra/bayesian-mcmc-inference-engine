@@ -17,7 +17,7 @@
 \usepackage{doi}
 \usepackage{bm}
 
-\graphicspath{{assets/figures/}{assets/others/}}
+\graphicspath{{assets/figures/}{assets/others/}{assets/diagnostics/}{assets/forecasting/}}
 
 \title{Bayesian MCMC Inference Engine for Cloud Compute Billing Prediction: An AR($p$) Approach}
 
@@ -34,38 +34,85 @@
 \begin{document}
 \maketitle
 
-% \begin{abstract}
-% The abstract.
-% \end{abstract}
+\begin{abstract}
+This technical report details the development of a custom Markov Chain Monte Carlo (MCMC) inference engine in R \cite{rproject} to forecast AWS/GCP cloud compute billing. By modeling the time series as an Autoregressive AR($p$) process and implementing a fully Bayesian Gibbs sampler, we shift from vulnerable point-estimate predictions to robust uncertainty quantification. The resulting 95\% credible intervals allow automated scaling systems to make defensive, risk-aware provisioning decisions.
+\end{abstract}
 
-% \keywords{Bayesian Inference \and MCMC \and Gibbs Sampler \and Autoregressive Model \and Cloud Billing}
+\keywords{Bayesian Inference \and MCMC \and Gibbs Sampler \and Autoregressive Model \and Cloud Billing}
 
 \section{Introduction}
-Explain the motivation behind Topic 10 (Cloud Compute Billing). Provide the justification for using a Bayesian approach, specifically highlighting the value of uncertainty quantification in cost forecasting compared to frequentist methods.
+Cloud computing costs on platforms like AWS and GCP exhibit complex temporal dependencies and high volatility. Traditional frequentist forecasting methods, such as standard Ordinary Least Squares (OLS) regression, provide only point-estimate predictions. In a production environment, relying on point estimates is risky: underestimating compute load can lead to severe system throttling, while over-provisioning leads to excessive budget drain.
+
+This project implements a fully Bayesian inference engine\footnote{Source code repository: \url{https://github.com/qu1r0ra/bayesian-mcmc-inference-engine}.} for an Autoregressive AR($p$) time series model \cite{box2015time}. By estimating the full posterior distribution of the autoregressive parameters, we quantify the algorithmic uncertainty of our forecasts. This allows automated infrastructure systems to extract 95\% credible intervals for future billing, enabling risk-aware, defensive resource scaling rather than relying on a single, highly uncertain prediction.
 
 \section{Methodology}
 This section describes the mathematical formulation of our AR($p$) framework and the subsequent logic of the Markov Chain Monte Carlo (MCMC) inference engine.
 
 \subsection{Mathematical Framework}
-Detail the AR($p$) process equation and the choice of semi-conjugate priors (Multivariate Normal for coefficients $\bm{\beta}$ and Inverse-Gamma for variance $\sigma^2$). Provide the derived full conditional distributions used in the sampling process.
+The autoregressive model of order $p$, denoted as AR($p$), for a time series $y_t$ is defined as:
+$$y_t = c + \phi_1 y_{t-1} + \phi_2 y_{t-2} + \dots + \phi_p y_{t-p} + \epsilon_t$$
+where $c$ is the intercept, $\phi_i$ are the autoregressive coefficients, and $\epsilon_t \sim \mathcal{N}(0, \sigma^2)$ represents Gaussian white noise. In matrix notation for $N$ observations, this is expressed as $Y = X\beta + \epsilon$, where $\beta = [c, \phi_1, \dots, \phi_p]^T$.
+
+To build the Bayesian architecture, we assign semi-conjugate priors \cite{gelman2013bayesian}. We place a Multivariate Normal prior on the coefficients $\beta \sim \mathcal{N}(\mu_0, \Lambda_0^{-1})$ and an Inverse-Gamma prior on the error variance $\sigma^2 \sim \mathcal{IG}(a_0, b_0)$.
 
 \subsection{MCMC Engine Implementation}
-Explain the iterative Gibbs sampling loop. Describe the structure of the R package core and how the sampling transitions between the conditional posteriors of $\bm{\beta}$ and $\sigma^2$.
+Because we selected semi-conjugate priors, the full conditional posterior distributions remain in the same family, allowing us to implement an exact Gibbs sampler \cite{robert2010monte} without the need for Metropolis-Hastings acceptance tuning. The MCMC engine iteratively samples from the following full conditionals:
+
+1. \textbf{Update for the coefficients ($\beta$):}
+$$\beta | Y, \sigma^2 \sim \mathcal{N}(\mu_n, \Lambda_n^{-1})$$
+where the posterior precision is $\Lambda_n = \Lambda_0 + \frac{1}{\sigma^2} X^T X$ and the posterior mean is $\mu_n = \Lambda_n^{-1} (\Lambda_0 \mu_0 + \frac{1}{\sigma^2} X^T Y)$.
+
+2. \textbf{Update for the variance ($\sigma^2$):}
+$$\sigma^2 | Y, \beta \sim \mathcal{IG}(a_n, b_n)$$
+where the updated shape parameter is $a_n = a_0 + \frac{N}{2}$ and the updated rate parameter incorporates the sum of squared residuals: $b_n = b_0 + \frac{1}{2} (Y - X\beta)^T(Y - X\beta)$.
 
 \section{Results and Discussion}
 We present the empirical results of our engine, starting with a ground-truth simulation and moving into detailed diagnostics and forecasting results.
 
 \subsection{Ground Truth Simulation \& Verification}
-Establish the known parameters used to generate the synthetic series. Demonstrate that the MCMC engine successfully recovers these "true" coefficients, verifying the mathematical correctness of the implementation.
+To validate the MCMC algorithm, we simulate a synthetic dataset where the true data-generating parameters are pre-defined and known. This simulated environment acts as an algorithmic debugging tool to ensure our Gibbs sampler successfully recovers the true underlying statistical structure before applying it to unseen data.
 
 \subsection{Diagnostics \& Convergence Analysis}
-Provide trace plots and density plots for the parameters to show mixing and stationarity. Report the Effective Sample Size (ESS) to ensure the independence of iterations.
+After discarding the burn-in period, we evaluate the convergence of the MCMC chains. The trace plots demonstrate visual chain mixing, and the posterior density plots confirm successful parameter recovery against our ground truth. 
+
+To quantify algorithmic efficiency, we calculated the summary statistics and the Effective Sample Size (ESS) for all parameters, detailed in Table 1. The ESS values (approaching 1500 for a 2000-iteration chain) indicate highly efficient, independent sampling with minimal autocorrelation.
+
+\begin{table}[h]
+\centering
+\caption{MCMC Diagnostic Summary \& Effective Sample Size}
+\vspace{0.1in}
+\begin{tabular}{lrrrrrr}
+\toprule
+\textbf{Parameter} & \textbf{Mean} & \textbf{SD} & \textbf{2.5\%} & \textbf{Median} & \textbf{97.5\%} & \textbf{ESS} \\
+\midrule
+Intercept & 14.615 & 2.179 & 10.392 & 14.639 & 18.826 & 1500.00 \\
+$\phi_1$ & 0.418 & 0.064 & 0.294 & 0.418 & 0.541 & 1500.00 \\
+$\phi_2$ & 0.141 & 0.064 & 0.015 & 0.139 & 0.272 & 1500.00 \\
+$\sigma^2$ & 0.846 & 0.078 & 0.711 & 0.837 & 1.022 & 1383.35 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.45\textwidth]{phi1_trace.png}
+\includegraphics[width=0.45\textwidth]{phi2_trace.png}
+\caption{MCMC Trace Plots for AR(2) coefficients showing rapid convergence and stationary mixing post-burn-in.}
+\end{figure}
 
 \subsection{Forecasting \& Uncertainty Quantification}
-Generate a 30-day forecast. Analyze the posterior predictive distributions and the 95\% credible intervals to quantify the range of likely billing outcomes.
+Instead of yielding a single point prediction, our engine outputs the full distribution of continuous predictions for the next 30 days.
 
-% \section{Conclusion}
-% Summary of the project's contributions and potential areas for future refinement.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{30_day_projection.png}
+\caption{Posterior Predictive Distribution of AWS/GCP Billing for 30 Days Ahead. The shaded region represents the 95\% Credible Interval.}
+\end{figure}
+
+\section{Conclusion}
+Traditional frequentist point-estimates fail to capture the inherent volatility of cloud compute billing. By deploying a fully Bayesian AR($p$) model equipped with a custom Gibbs sampler, we successfully transitioned from deterministic predictions to probabilistic forecasting. 
+
+In a production setting, this algorithmic uncertainty quantification is critical. An automated infrastructure load-balancer can monitor the upper bound of the 95\% credible interval to preemptively provision reserve server instances, preventing system crashes before peak loads occur. Conversely, financial systems can monitor the lower bound, triggering budget alerts only when there is strict statistical certainty of cost overruns, drastically reducing false-alarm alert fatigue. This project demonstrates that Bayesian inference provides the necessary mathematical rigor for defensive, risk-aware automated decision-making.
 
 \bibliographystyle{unsrtnat}
 \bibliography{references}
